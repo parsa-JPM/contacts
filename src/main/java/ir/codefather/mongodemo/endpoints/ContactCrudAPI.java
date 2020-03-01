@@ -10,9 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,15 +26,15 @@ public class ContactCrudAPI {
     }
 
 
-    @GetMapping("/add/contact")
-    public Contact add(ContactDTO contactDTO) {
+    @PostMapping("/api/add/contact")
+    public Contact add(@RequestBody ContactDTO contactDTO) {
         Contact contact = contactRepo.save(new Contact(contactDTO.getName(), contactDTO.getNumber()));
 
         return contact;
     }
 
-    @GetMapping("/update/contact/{id}")
-    public Contact update(ContactDTO contactDTO, @PathVariable String id) {
+    @PostMapping("/api/update/contact/{id}")
+    public Contact update(@RequestBody ContactDTO contactDTO, @PathVariable String id) {
         Contact contact = contactRepo.findById(id).orElseThrow();
         contact.name = contactDTO.getName();
         contact.number = contactDTO.getNumber();
@@ -45,7 +43,7 @@ public class ContactCrudAPI {
         return contact;
     }
 
-    @GetMapping("/delete/contact/{id}")
+    @PostMapping("/api/delete/contact/{id}")
     public void delete(@PathVariable String id) {
         contactRepo.deleteById(id);
     }
@@ -55,11 +53,11 @@ public class ContactCrudAPI {
      *
      * @return List<Contact>
      */
-    @GetMapping("/contacts")
+    @GetMapping("/api/contacts")
     public List<Contact> getContacts() {
         Query query = new Query();
         //TODO make it paginate dynamic
-        Pageable pageable = PageRequest.of(0, 2);
+        Pageable pageable = PageRequest.of(0, 100);
         query.with(Sort.by(Sort.Direction.ASC,"name"));
         query.with(pageable);
 
