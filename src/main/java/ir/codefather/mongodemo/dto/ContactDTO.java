@@ -1,9 +1,23 @@
 package ir.codefather.mongodemo.dto;
 
+import javax.validation.constraints.NotEmpty;
+
 public class ContactDTO {
 
+    private String id;
+    @NotEmpty(message = "name must not to be empty")
     private String name;
+    @NotEmpty(message = "number must not to be empty")
     private String number;
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -24,7 +38,8 @@ public class ContactDTO {
     @Override
     public String toString() {
         return "ContactDTO{" +
-                "name='" + name + '\'' +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
                 ", number='" + number + '\'' +
                 '}';
     }

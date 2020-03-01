@@ -21,11 +21,10 @@ public class ContactListController {
         var host = URLUtils.getHost(request);
         var modelAndView = new ModelAndView(CONTACT_LIST_VIEW);
 
-        List<LinkedHashMap> contacts = restTemplate.getForObject(host + "/contacts", List.class);
+        List<LinkedHashMap> contacts = restTemplate.getForObject(host + "/api/contacts", List.class);
         modelAndView.addObject("contacts",contacts);
 
-        contacts.forEach(System.out::println);
-        //TODO make paginate in view beutifully and make it dynamic
+        //TODO make paginate in view beutifully and make it dynamic;
 
         return modelAndView;
     }
