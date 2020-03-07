@@ -12,6 +12,7 @@
     <artifactId>mongo-demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>mongo-demo</name>
+    <packaging>war</packaging>
     <description>Demo project for Spring Boot</description>
 
 
@@ -30,11 +31,14 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-jasper -->
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-jasper</artifactId>
-            <version>9.0.31</version>
         </dependency>
 
         <dependency>
@@ -53,6 +57,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
     </dependencies>
 
     <build>
