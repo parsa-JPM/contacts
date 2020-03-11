@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Collation;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.bind.annotation.*;
 
@@ -59,6 +60,7 @@ public class ContactCrudAPI {
         //TODO make it paginate dynamic
         Pageable pageable = PageRequest.of(0, 100);
         query.with(Sort.by(Sort.Direction.ASC,"name"));
+        query.collation(Collation.of("fa"));
         query.with(pageable);
 
         return mongoTemplate.find(query, Contact.class);
