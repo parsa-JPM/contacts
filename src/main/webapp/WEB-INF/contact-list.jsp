@@ -27,7 +27,7 @@
     <div class="card card-default" id="card_contacts">
         <div id="contacts" class="panel-collapse collapse show" aria-expanded="true" style="">
             <ul class="list-group pull-down" id="contact-list">
-                <c:forEach items="${contacts}" var="contact" varStatus="counter">
+                <c:forEach items="${contacts.getContent()}" var="contact" varStatus="counter">
 
                     <li class="list-group-item">
                         <div class="row w-100">
@@ -62,6 +62,31 @@
             </ul>
             <!--/contacts list-->
         </div>
+    </div>
+
+
+    <div class="col-12 m-1">
+        <nav aria-label="...">
+            <ul class="pagination">
+                <li class="page-item disabled">
+                    <span class="page-link">Previous</span>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item active">
+          <span class="page-link">
+            2
+            <span class="sr-only">(current)</span>
+          </span>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                </li>
+            </ul>
+        </nav>
+
     </div>
 </div>
 </body>

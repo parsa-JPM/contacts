@@ -4,23 +4,16 @@ package ir.codefather.mongodemo.endpoints;
 import ir.codefather.mongodemo.dto.ContactDTO;
 import ir.codefather.mongodemo.entities.Contact;
 import ir.codefather.mongodemo.repos.ContactRepo;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Collation;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 public class ContactCrudAPI {
 
     private final ContactRepo contactRepo;
-    @Autowired
-    private MongoTemplate mongoTemplate;
 
     public ContactCrudAPI(ContactRepo contactRepo) {
         this.contactRepo = contactRepo;
@@ -49,20 +42,28 @@ public class ContactCrudAPI {
         contactRepo.deleteById(id);
     }
 
-    /**
-     * get list of contacts with paginate and order(with mongo template)
-     *
-     * @return List<Contact>
-     */
-    @GetMapping("/api/contacts")
-    public List<Contact> getContacts() {
-        Query query = new Query();
-        //TODO make it paginate dynamic
-        Pageable pageable = PageRequest.of(0, 100);
-        query.with(Sort.by(Sort.Direction.ASC,"name"));
-        query.collation(Collation.of("fa"));
-        query.with(pageable);
 
-        return mongoTemplate.find(query, Contact.class);
+    @GetMapping("/api/contacts")
+    public Page<Contact> getContacts() {
+
+        return getContacts(0);
+    }
+
+    @GetMapping("/api/contacts/{page}")
+    public Page<Contact> getContactsWithPage(@PathVariable int page) {
+        /**
+         * this is why we send natural numbers but pages start from zero
+         */
+        if (page != 0)
+            page--;
+
+        return getContacts(page);
+    }
+
+    private Page<Contact> getContacts(int page) {
+        Pageable pageable = PageRequest.of(page, 4, Sort.by("name"));
+        Page<Contact> contacts = contactRepo.findAllPaginate(pageable);
+
+        return contacts;
     }
 }
