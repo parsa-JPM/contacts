@@ -37,6 +37,8 @@ public class ContactListController {
 
         modelAndView.addObject("contacts", contacts);
 
+        modelAndView.addObject("name","parsa");
+
         return modelAndView;
     }
 
