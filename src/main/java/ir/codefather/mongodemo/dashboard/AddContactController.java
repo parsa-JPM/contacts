@@ -75,8 +75,6 @@ public class AddContactController {
                               RedirectAttributes redAttr,
                               HttpServletRequest request) {
 
-        System.out.println(contactDTO);
-
         if (validationResult.hasErrors()) {
             redAttr.addFlashAttribute("contactModel", contactDTO);
             redAttr.addFlashAttribute(BindingResult.class.getName() + ".contactModel", validationResult);
