@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * why did we use this?
- *
+ * <p>
  * The problem with Page is that Jackson cannot instantiate an abstract type.
  * You should give Jackson the information on how to instantiate Page with a concrete type.
  * But its concrete type, PageImpl, has no default constructor or
@@ -47,5 +47,12 @@ public class RestPageImpl<T> extends PageImpl<T> {
 
     public RestPageImpl() {
         super(new ArrayList<>());
+    }
+
+    /**
+     * @return page number with natural numbers
+     */
+    public int current() {
+        return super.getNumber() + 1;
     }
 }

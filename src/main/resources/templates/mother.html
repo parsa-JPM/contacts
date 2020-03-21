@@ -1,17 +1,38 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head th:fragment="head(title)">
     <meta charset="UTF-8">
     <title th:text="${title}">Title</title>
     <link rel="stylesheet" href="/css/style.css">
     <script src="/js/jquery-3.4.1.min.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
 </head>
 
 <body>
+
+<div th:fragment="pagintation(contacts)">
+    <ul class="pagination">
+        <li class="page-item" th:classappend="${contacts.first} ? disabled">
+            <a class="page-link" href="#"
+               th:href="@{'/page/'+${contacts.first ? 1 :contacts.current() - 1} }">Previous</a>
+        </li>
+
+        <li class="page-item" th:classappend="${contacts.current()  == page} ? active"
+            th:each="page:${#numbers.sequence(1,contacts.totalPages)}">
+            <a class="page-link" href="#" th:href="@{'/page/' + ${page} }" th:text="${page}"> 1 </a></li>
+
+        <li class="page-item" th:classappend="${contacts.last}? disabled">
+            <a class="page-link" href="#"
+               th:href="@{'/page/' + ${contacts.last? contacts.totalPages : contacts.current()+1} }">Next</a>
+        </li>
+    </ul>
+</div>
 
 </body>
 </html>

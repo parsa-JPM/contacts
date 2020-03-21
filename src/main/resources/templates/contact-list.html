@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="mother::head('Contact list')"></head>
 
@@ -14,41 +14,40 @@
     </div>
     <div class="card card-default" id="card_contacts">
         <div id="contacts" class="panel-collapse collapse show" aria-expanded="true" style="">
-            <ul  class="list-group pull-down" id="contact-list">
+            <ul class="list-group pull-down" id="contact-list">
 
-                    <li class="list-group-item" th:each="contact,itr:${contacts.getContent()}">
-                        <div class="row w-100">
-                            <div class="col-12 col-sm-4 col-md-2 px-0">
-                                <img th:src="@{'https://i.picsum.photos/id/' + ${itr.index+60} + '/100/100.jpg' }"
-                                     alt="Mike Anamendolla"
-                                     class="rounded-circle mx-auto d-block img-fluid">
-                            </div>
-                            <div class="col-10 col-sm-4 col-md-7 text-center text-sm-left">
-                                <label class="name lead" th:text="${contact.get('name')}">name</label>
-                                <br>
-                                <span class="fa fa-phone fa-fw text-muted" data-toggle="tooltip" title=""
-                                      data-original-title='[[${contact.get("number")}]]'></span>
-                                <span class="text-muted small" th:text='${contact.get("number")}'>number</span>
-                                <br>
-                                <span class="fa fa-envelope fa-fw text-muted" data-toggle="tooltip"
-                                      data-original-title="" title=""></span>
-                                <span class="text-muted small text-truncate">test@example.com</span>
-                            </div>
-                            <div class="col-10 col-sm-4 col-md-3 text-right">
-                                <a href="#" th:href="@{'/update/contact/'+${contact.get('id')} }">
-                                <button type="button" class="btn btn-outline-primary">Update</button>
-                                </a>
-                                <a href="#" th:href="@{'/delete/contact/'+${contact.get('id')} }">
-                                <button type="button" class="btn btn-outline-danger">Delete</button>
-                                </a>
-                            </div>
+                <li class="list-group-item" th:each="contact,itr:${contacts.getContent()}">
+                    <div class="row w-100">
+                        <div class="col-12 col-sm-4 col-md-2 px-0">
+                            <img th:src="@{'https://i.picsum.photos/id/' + ${itr.index+60} + '/100/100.jpg' }"
+                                 alt="Mike Anamendolla"
+                                 class="rounded-circle mx-auto d-block img-fluid">
                         </div>
-                    </li>
-
+                        <div class="col-10 col-sm-4 col-md-7 text-center text-sm-left">
+                            <label class="name lead" th:text="${contact.get('name')}">name</label>
+                            <br>
+                            <span class="fa fa-phone fa-fw text-muted" data-toggle="tooltip" title=""
+                                  data-original-title='[[${contact.get("number")}]]'></span>
+                            <span class="text-muted small" th:text='${contact.get("number")}'>number</span>
+                            <br>
+                            <span class="fa fa-envelope fa-fw text-muted" data-toggle="tooltip"
+                                  data-original-title="" title=""></span>
+                            <span class="text-muted small text-truncate">test@example.com</span>
+                        </div>
+                        <div class="col-10 col-sm-4 col-md-3 text-right">
+                            <a href="#" th:href="@{'/update/contact/'+${contact.get('id')} }">
+                                <button type="button" class="btn btn-outline-primary">Update</button>
+                            </a>
+                            <a href="#" th:href="@{'/delete/contact/'+${contact.get('id')} }">
+                                <button type="button" class="btn btn-outline-danger">Delete</button>
+                            </a>
+                        </div>
+                    </div>
+                </li>
             </ul>
-            <!--/contacts list-->
         </div>
     </div>
+    <div id="pagination" th:replace="mother::pagintation(${contacts})"></div>
 </div>
 
 </body>
