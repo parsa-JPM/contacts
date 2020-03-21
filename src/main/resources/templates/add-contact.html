@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="mother::head('add contact')"></head>
+
+<body>
+<div class="container">
+    <div class="container">
+        <h2>Contact Form</h2>
+        <form method="post" action="#" th:action="@{/save/contact}" th:object="${contactModel}">
+            <input type="hidden" th:field="*{id}">
+            <div class="form-group">
+
+                <label for="name">Name:</label>
+                <input type="text" th:field="*{name}" class="form-control" id="name" placeholder="Enter name">
+                <div class="col-sm-3" >
+                    <small class="text-danger" th:errors="*{name}">
+                        Name is required
+                    </small>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="number">Number:</label>
+                <input type="text" th:field="*{number}" class="form-control" id="number" placeholder="Enter number">
+                <div class="col-sm-3" >
+                    <small  class="text-danger" th:errors="*{number}">
+                        Number is required
+                    </small>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
