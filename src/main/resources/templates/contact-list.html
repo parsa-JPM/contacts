@@ -14,7 +14,12 @@
     </div>
     <div class="card card-default" id="card_contacts">
         <div id="contacts" class="panel-collapse collapse show" aria-expanded="true" style="">
-            <ul class="list-group pull-down" id="contact-list">
+
+            <div class="alert alert-warning" role="alert" th:if="${contacts.getTotalPages() == 0}">
+                Sorry we have no contacts. <a href="/add/contact" class="alert-link">Add a new one now</a>
+            </div>
+
+            <ul class="list-group pull-down" id="contact-list" th:if="${contacts.getTotalPages() != 0}">
 
                 <li class="list-group-item" th:each="contact,itr:${contacts.getContent()}">
                     <div class="row w-100">

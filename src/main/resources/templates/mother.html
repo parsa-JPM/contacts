@@ -17,7 +17,7 @@
 <body>
 
 <div th:fragment="pagintation(contacts)">
-    <ul class="pagination">
+    <ul class="pagination" th:if="${contacts.getTotalPages() > 1}">
         <li class="page-item" th:classappend="${contacts.first} ? disabled">
             <a class="page-link" href="#"
                th:href="@{'/page/'+${contacts.first ? 1 :contacts.current() - 1} }">Previous</a>
