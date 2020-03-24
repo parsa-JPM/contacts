@@ -79,7 +79,7 @@ public class AddContactController {
             redAttr.addFlashAttribute("contactModel", contactDTO);
             redAttr.addFlashAttribute(BindingResult.class.getName() + ".contactModel", validationResult);
 
-            if (contactDTO.getId().isBlank())
+            if (contactDTO.getId() == null || contactDTO.getId().isBlank())
                 return "redirect:/add/contact";
             else
                 return "redirect:/update/contact/" + contactDTO.getId();
@@ -100,7 +100,9 @@ public class AddContactController {
     private void saveContact(ContactDTO contactDTO, HttpServletRequest request) {
         var restTemplate = new RestTemplate();
 
-        if (contactDTO.getId().isBlank())
+        System.out.println(contactDTO);
+
+        if (contactDTO.getId() == null || contactDTO.getId().isBlank())
             restTemplate.postForLocation(URLUtils.getHost(request) + "/api/add/contact", contactDTO);
         else
             restTemplate.postForLocation(URLUtils.getHost(request) + "/api/update/contact/" + contactDTO.getId()
