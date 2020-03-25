@@ -2,3 +2,8 @@ body{
     background-image: url("/img/bg.jpeg");
     background-attachment: fixed;
 }
+
+#editor{
+    background: white;
+    border-radius: 5px;
+}
