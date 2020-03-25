@@ -13,4 +13,6 @@ public interface ContactRepo extends MongoRepository<Contact, String> {
 
     @Query(collation = "fa", value = "{}")
     Page<Contact> findAllPaginate(Pageable pageable);
+
+
 }

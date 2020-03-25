@@ -61,7 +61,7 @@ public class ContactCrudAPI {
     }
 
     private Page<Contact> getContacts(int page) {
-        Pageable pageable = PageRequest.of(page, 4, Sort.by("name"));
+        Pageable pageable = PageRequest.of(page, 5, Sort.by("name"));
         Page<Contact> contacts = contactRepo.findAllPaginate(pageable);
 
         return contacts;

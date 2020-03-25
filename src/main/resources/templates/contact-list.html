@@ -5,12 +5,24 @@
 
 <body>
 
-<div class="container">
+<div class="container p-5">
     <!-- contacts card -->
-    <div class="col-12 text-right">
-        <a href="/add/contact">
-            <button type="button" class="btn btn-secondary btn-lg m-1 ">Add Contact +</button>
-        </a>
+    <div class="row">
+        <div class="col-4 ">
+            <form action="/" th:if="${contacts.getTotalPages() != 0}">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="search" placeholder="Search name or mobile">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">Find</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-8 text-right">
+            <a href="/add/contact">
+                <button type="button" class="btn btn-secondary mb-2">Add Contact +</button>
+            </a>
+        </div>
     </div>
     <div class="card card-default" id="card_contacts">
         <div id="contacts" class="panel-collapse collapse show" aria-expanded="true" style="">
