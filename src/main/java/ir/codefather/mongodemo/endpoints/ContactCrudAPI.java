@@ -44,25 +44,33 @@ public class ContactCrudAPI {
 
 
     @GetMapping("/api/contacts")
-    public Page<Contact> getContacts() {
-
-        return getContacts(0);
+    public Page<Contact> getContacts(@RequestParam(value = "search", required = false) String search) {
+        return getContacts(0, search);
     }
 
     @GetMapping("/api/contacts/{page}")
-    public Page<Contact> getContactsWithPage(@PathVariable int page) {
+    public Page<Contact> getContactsWithPage(@PathVariable int page,
+                                             @RequestParam(value = "search", required = false) String search) {
         /**
          * this is why we send natural numbers but pages start from zero
          */
         if (page != 0)
             page--;
 
-        return getContacts(page);
+        return getContacts(page, search);
     }
 
-    private Page<Contact> getContacts(int page) {
-        Pageable pageable = PageRequest.of(page, 5, Sort.by("name"));
-        Page<Contact> contacts = contactRepo.findAllPaginate(pageable);
+    private Page<Contact> getContacts(int page, String search) {
+        var pageSize = 5;
+
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.by("name"));
+
+        if (search == null || search.isBlank()) {
+            Page<Contact> contacts = contactRepo.findAllPaginate(pageable);
+            return contacts;
+        }
+
+        Page<Contact> contacts = contactRepo.search(search, pageable);
 
         return contacts;
     }

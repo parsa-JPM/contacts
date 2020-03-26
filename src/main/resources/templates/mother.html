@@ -16,20 +16,21 @@
 
 <body>
 
-<div th:fragment="pagintation(contacts)" class="mt-2">
+<div th:fragment="pagintation(contacts)" th:with="search=${param.search==null ?'' :'?search='+param.search}"
+     class="mt-2">
     <ul class="pagination" th:if="${contacts.getTotalPages() > 1}">
         <li class="page-item" th:classappend="${contacts.first} ? disabled">
             <a class="page-link" href="#"
-               th:href="@{'/page/'+${contacts.first ? 1 :contacts.current() - 1} }">Previous</a>
+               th:href="@{'/page/'+${contacts.first ? 1 :contacts.current() - 1} + ${search} }">Previous</a>
         </li>
 
         <li class="page-item" th:classappend="${contacts.current()  == page} ? active"
             th:each="page:${#numbers.sequence(1,contacts.totalPages)}">
-            <a class="page-link" href="#" th:href="@{'/page/' + ${page} }" th:text="${page}"> 1 </a></li>
+            <a class="page-link" href="#" th:href="@{'/page/' + ${page} + ${search}}" th:text="${page}"> 1 </a></li>
 
         <li class="page-item" th:classappend="${contacts.last}? disabled">
             <a class="page-link" href="#"
-               th:href="@{'/page/' + ${contacts.last? contacts.totalPages : contacts.current()+1} }">Next</a>
+               th:href="@{'/page/' + ${contacts.last? contacts.totalPages : contacts.current()+1} + ${search}}">Next</a>
         </li>
     </ul>
 </div>

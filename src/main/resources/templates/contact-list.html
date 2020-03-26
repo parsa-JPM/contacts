@@ -9,9 +9,12 @@
     <!-- contacts card -->
     <div class="row">
         <div class="col-4 ">
-            <form action="/" th:if="${contacts.getTotalPages() != 0}">
+            <form action="/" th:if="${contacts.getTotalPages() != 0 || #request.getParameter('search')!=null}">
                 <div class="input-group">
-                    <input type="text" class="form-control" id="search" placeholder="Search name or mobile">
+                    <input type="text" class="form-control" name="search" id="search"
+                           th:value="${#request.getParameter('search')}"
+                           placeholder="Search name or mobile"
+                            autocomplete="false">
                     <div class="input-group-append">
                         <button type="submit" class="btn btn-primary">Find</button>
                     </div>
@@ -27,8 +30,14 @@
     <div class="card card-default" id="card_contacts">
         <div id="contacts" class="panel-collapse collapse show" aria-expanded="true" style="">
 
-            <div class="alert alert-warning" role="alert" th:if="${contacts.getTotalPages() == 0}">
+            <div class="alert alert-warning" role="alert" th:if="${contacts.getTotalPages() == 0
+                && #request.getParameter('search')==null}">
                 Sorry we have no contacts. <a href="/add/contact" class="alert-link">Add a new one now</a>
+            </div>
+
+            <div class="alert alert-info" role="alert" th:if="${contacts.getTotalPages() == 0
+                && #request.getParameter('search')!=null}">
+                Sorry, your search doest't have any result
             </div>
 
             <ul class="list-group pull-down" id="contact-list" th:if="${contacts.getTotalPages() != 0}">

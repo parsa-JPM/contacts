@@ -11,8 +11,10 @@ import org.springframework.stereotype.Repository;
 public interface ContactRepo extends MongoRepository<Contact, String> {
     Contact findByName(String name);
 
-    @Query(collation = "fa", value = "{}")
+    @Query(value = "{}", collation = "fa")
     Page<Contact> findAllPaginate(Pageable pageable);
 
+    @Query(value = "{$or:[{name:{$regex: ?0 }},{number   :?0}]}", collation = "fa")
+    Page<Contact> search(String nameOrMobile, Pageable pageable);
 
 }

@@ -18,26 +18,30 @@ public class ContactListController {
 
     @GetMapping("/")
     public ModelAndView showList(HttpServletRequest request) {
-        return prePareDataToShowList(request, 1);
+        return prePareDataToShowList(request, 1, request.getParameter("search"));
     }
 
     @GetMapping("/page/{page}")
     public ModelAndView showList(HttpServletRequest request, @PathVariable Integer page) {
-        return prePareDataToShowList(request, page);
+        return prePareDataToShowList(request, page, request.getParameter("search"));
     }
 
-    private ModelAndView prePareDataToShowList(HttpServletRequest request, Integer page) {
+    private ModelAndView prePareDataToShowList(HttpServletRequest request, Integer page, String search) {
         var restTemplate = new RestTemplate();
         var host = URLUtils.getHost(request);
         var modelAndView = new ModelAndView(CONTACT_LIST_VIEW);
 
         String endpoint = "/api/contacts/".concat(page.toString());
 
+
+        if(search!=null)
+           endpoint = endpoint.concat("?search=").concat(search);
+
         RestPageImpl<Contact> contacts = restTemplate.getForObject(host.concat(endpoint), RestPageImpl.class);
 
         modelAndView.addObject("contacts", contacts);
 
-        modelAndView.addObject("name","parsa");
+        modelAndView.addObject("name", "parsa");
 
         return modelAndView;
     }
