@@ -1,17 +1,21 @@
-version: "2"
+version: "3"
 services:
   web:
     build: .
     image: contacts
     container_name: contacts
-    ports:
-      - "4030:8080"
+    restart: always
     environment:
-      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/mongo-test
-    depends_on:
-      - mongo
-  mongo:
+      - spring_data_mongodb_host=db
+      - spring_data_mongodb_authentication-database=admin
+      - spring_data_mongodb_username=myUserAdmin
+      - spring_data_mongodb_password=87654321
+      - server_port=4030
+    ports:
+      - "4030:4030"
+  db:
     image: mongo
     container_name: mongodb
+    restart: always
     ports:
       - "27017:27017"
