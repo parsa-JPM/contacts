@@ -9,6 +9,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @RestController
 public class ContactCrudAPI {
@@ -21,20 +27,44 @@ public class ContactCrudAPI {
 
 
     @PostMapping("/api/add/contact")
-    public Contact add(@RequestBody ContactDTO contactDTO) {
+    public Contact add(ContactDTO contactDTO) {
+        System.out.println(contactDTO);
+        uploadAvatar(contactDTO.getFile());
         Contact contact = contactRepo.save(new Contact(contactDTO.getName(), contactDTO.getNumber()));
 
         return contact;
     }
 
     @PostMapping("/api/update/contact/{id}")
-    public Contact update(@RequestBody ContactDTO contactDTO, @PathVariable String id) {
+    public Contact update(ContactDTO contactDTO, @PathVariable String id) {
+
+        System.out.println(contactDTO);
+        uploadAvatar(contactDTO.getFile());
         Contact contact = contactRepo.findById(id).orElseThrow();
         contact.name = contactDTO.getName();
         contact.number = contactDTO.getNumber();
         contactRepo.save(contact);
 
         return contact;
+    }
+
+
+    /**
+     * upload profile image of contact
+     *
+     * @param file
+     * @return void
+     */
+    private void uploadAvatar(@RequestParam("file") MultipartFile file) {
+        String dir = "/var/www/upload/";
+        Path path = Paths.get(dir + file.getOriginalFilename());
+
+        try {
+            Files.write(path, file.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @PostMapping("/api/delete/contact/{id}")

@@ -4,19 +4,22 @@ import ir.codefather.mongodemo.Utils.URLUtils;
 import ir.codefather.mongodemo.dto.ContactDTO;
 import ir.codefather.mongodemo.entities.Contact;
 import ir.codefather.mongodemo.repos.ContactRepo;
+import kong.unirest.Unirest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
 
 /**
  * It also used for update
@@ -77,6 +80,7 @@ public class AddContactController {
 
         if (validationResult.hasErrors()) {
             redAttr.addFlashAttribute("contactModel", contactDTO);
+            System.out.println(validationResult);
             redAttr.addFlashAttribute(BindingResult.class.getName() + ".contactModel", validationResult);
 
             if (contactDTO.getId() == null || contactDTO.getId().isBlank())
@@ -85,7 +89,11 @@ public class AddContactController {
                 return "redirect:/update/contact/" + contactDTO.getId();
         }
 
-        saveContact(contactDTO, request);
+        try {
+            saveContact(contactDTO, request);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return "redirect:/";
     }
@@ -97,17 +105,21 @@ public class AddContactController {
      * @param contactDTO
      * @param request
      */
-    private void saveContact(ContactDTO contactDTO, HttpServletRequest request) {
-        var restTemplate = new RestTemplate();
-
-        System.out.println(contactDTO);
+    private void saveContact(ContactDTO contactDTO, HttpServletRequest request) throws IOException {
 
         if (contactDTO.getId() == null || contactDTO.getId().isBlank())
-            restTemplate.postForLocation(URLUtils.getHost(request) + "/api/add/contact", contactDTO);
+            Unirest.post(URLUtils.getHost(request) + "/api/add/contact")
+                    .field("id", contactDTO.getId())
+                    .field("name", contactDTO.getName())
+                    .field("number", contactDTO.getNumber())
+                    .field("file", contactDTO.getFile().getInputStream(), contactDTO.getFile().getOriginalFilename())
+                    .asEmpty();
         else
-            restTemplate.postForLocation(URLUtils.getHost(request) + "/api/update/contact/" + contactDTO.getId()
-                    , contactDTO);
-
-        logger.info("saved contact : " + contactDTO);
+            Unirest.post(URLUtils.getHost(request) + "/api/update/contact/" + contactDTO.getId())
+                    .field("id", contactDTO.getId())
+                    .field("name", contactDTO.getName())
+                    .field("number", contactDTO.getNumber())
+                    .field("file", contactDTO.getFile().getInputStream(), contactDTO.getFile().getOriginalFilename())
+                    .asEmpty();
     }
 }

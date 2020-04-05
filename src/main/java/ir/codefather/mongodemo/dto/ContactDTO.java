@@ -1,5 +1,7 @@
 package ir.codefather.mongodemo.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.validation.constraints.NotEmpty;
 
 public class ContactDTO {
@@ -9,6 +11,8 @@ public class ContactDTO {
     private String name;
     @NotEmpty(message = "number must not to be empty")
     private String number;
+
+    private MultipartFile file;
 
 
     public String getId() {
@@ -35,12 +39,22 @@ public class ContactDTO {
         this.number = number;
     }
 
+
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
+    }
+
     @Override
     public String toString() {
         return "ContactDTO{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", number='" + number + '\'' +
+                ", file=" + file.getOriginalFilename() +
                 '}';
     }
 }
