@@ -114,13 +114,13 @@ public class AddContactController {
                     .field("id", contactDTO.getId())
                     .field("name", contactDTO.getName())
                     .field("number", contactDTO.getNumber())
-                    .field("file", contactDTO.getProfile().getInputStream(), contactDTO.getProfile().getOriginalFilename())
+                    .field("profile", contactDTO.getProfile().getInputStream(), contactDTO.getProfile().getOriginalFilename())
                     .asEmpty();
         else
             Unirest.post(URLUtils.getHost(request) + "/api/update/contact/" + contactDTO.getId())
                     .field("name", contactDTO.getName())
                     .field("number", contactDTO.getNumber())
-                    .field("file", contactDTO.getProfile().getInputStream(), contactDTO.getProfile().getOriginalFilename())
+                    .field("profile", contactDTO.getProfile().getInputStream(), contactDTO.getProfile().getOriginalFilename())
                     .asEmpty();
     }
 }

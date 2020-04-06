@@ -31,16 +31,15 @@ public class ContactCrudAPI {
         if (contactDTO.getProfile() != null && !contactDTO.getProfile().isEmpty())
             uploadAvatar(contactDTO.getProfile());
 
-        Contact contact = contactRepo.save(new Contact(contactDTO.getName(), contactDTO.getNumber()));
-
-        return contact;
+        return contactRepo.save(new Contact(contactDTO.getName(), contactDTO.getNumber()));
     }
 
     @PostMapping("/api/update/contact/{id}")
     public Contact update(ContactDTO contactDTO, @PathVariable String id) {
 
-        if (contactDTO.getProfile() != null && !contactDTO.getProfile().isEmpty())
+        if (contactDTO.getProfile() != null && !contactDTO.getProfile().isEmpty()){
             uploadAvatar(contactDTO.getProfile());
+        }
 
         Contact contact = contactRepo.findById(id).orElseThrow();
         contact.name = contactDTO.getName();
