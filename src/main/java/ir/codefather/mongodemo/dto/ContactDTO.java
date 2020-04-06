@@ -1,5 +1,6 @@
 package ir.codefather.mongodemo.dto;
 
+import ir.codefather.mongodemo.validations.FileSize;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotEmpty;
@@ -12,7 +13,8 @@ public class ContactDTO {
     @NotEmpty(message = "number must not to be empty")
     private String number;
 
-    private MultipartFile file;
+    @FileSize(4000000)
+    private MultipartFile profile;
 
 
     public String getId() {
@@ -39,13 +41,12 @@ public class ContactDTO {
         this.number = number;
     }
 
-
-    public MultipartFile getFile() {
-        return file;
+    public MultipartFile getProfile() {
+        return profile;
     }
 
-    public void setFile(MultipartFile file) {
-        this.file = file;
+    public void setProfile(MultipartFile profile) {
+        this.profile = profile;
     }
 
     @Override
@@ -54,7 +55,7 @@ public class ContactDTO {
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", number='" + number + '\'' +
-                ", file=" + file.getOriginalFilename() +
+                ", file=" + profile +
                 '}';
     }
 }

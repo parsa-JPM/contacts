@@ -80,7 +80,9 @@ public class AddContactController {
 
         if (validationResult.hasErrors()) {
             redAttr.addFlashAttribute("contactModel", contactDTO);
-            System.out.println(validationResult);
+            /**
+             * this need to display errors in redirected page.
+             */
             redAttr.addFlashAttribute(BindingResult.class.getName() + ".contactModel", validationResult);
 
             if (contactDTO.getId() == null || contactDTO.getId().isBlank())
@@ -112,14 +114,13 @@ public class AddContactController {
                     .field("id", contactDTO.getId())
                     .field("name", contactDTO.getName())
                     .field("number", contactDTO.getNumber())
-                    .field("file", contactDTO.getFile().getInputStream(), contactDTO.getFile().getOriginalFilename())
+                    .field("file", contactDTO.getProfile().getInputStream(), contactDTO.getProfile().getOriginalFilename())
                     .asEmpty();
         else
             Unirest.post(URLUtils.getHost(request) + "/api/update/contact/" + contactDTO.getId())
-                    .field("id", contactDTO.getId())
                     .field("name", contactDTO.getName())
                     .field("number", contactDTO.getNumber())
-                    .field("file", contactDTO.getFile().getInputStream(), contactDTO.getFile().getOriginalFilename())
+                    .field("file", contactDTO.getProfile().getInputStream(), contactDTO.getProfile().getOriginalFilename())
                     .asEmpty();
     }
 }

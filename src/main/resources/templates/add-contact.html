@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="mother::head('add contact')"></head>
 
@@ -31,9 +31,9 @@
                 </div>
             </div>
             <div class="form-group">
-                <input class="form-control" name="file" type="file">
+                <input class="form-control" th:field="*{profile}"  type="file">
                 <div class="col-sm-3" >
-                    <small  class="text-danger" >
+                    <small  class="text-danger" th:errors="*{profile}">
 
                     </small>
                 </div>

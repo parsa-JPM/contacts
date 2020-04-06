@@ -28,8 +28,9 @@ public class ContactCrudAPI {
 
     @PostMapping("/api/add/contact")
     public Contact add(ContactDTO contactDTO) {
-        System.out.println(contactDTO);
-        uploadAvatar(contactDTO.getFile());
+        if (contactDTO.getProfile() != null && !contactDTO.getProfile().isEmpty())
+            uploadAvatar(contactDTO.getProfile());
+
         Contact contact = contactRepo.save(new Contact(contactDTO.getName(), contactDTO.getNumber()));
 
         return contact;
@@ -38,8 +39,9 @@ public class ContactCrudAPI {
     @PostMapping("/api/update/contact/{id}")
     public Contact update(ContactDTO contactDTO, @PathVariable String id) {
 
-        System.out.println(contactDTO);
-        uploadAvatar(contactDTO.getFile());
+        if (contactDTO.getProfile() != null && !contactDTO.getProfile().isEmpty())
+            uploadAvatar(contactDTO.getProfile());
+
         Contact contact = contactRepo.findById(id).orElseThrow();
         contact.name = contactDTO.getName();
         contact.number = contactDTO.getNumber();
@@ -55,7 +57,7 @@ public class ContactCrudAPI {
      * @param file
      * @return void
      */
-    private void uploadAvatar(@RequestParam("file") MultipartFile file) {
+    private void uploadAvatar(MultipartFile file) {
         String dir = "/var/www/upload/";
         Path path = Paths.get(dir + file.getOriginalFilename());
 
