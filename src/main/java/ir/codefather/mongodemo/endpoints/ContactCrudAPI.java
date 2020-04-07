@@ -19,6 +19,8 @@ import java.nio.file.Paths;
 @RestController
 public class ContactCrudAPI {
 
+    public static final String UPLOAD_DIR = "/var/www/upload/avatars/";
+
     private final ContactRepo contactRepo;
 
     public ContactCrudAPI(ContactRepo contactRepo) {
@@ -28,22 +30,26 @@ public class ContactCrudAPI {
 
     @PostMapping("/api/add/contact")
     public Contact add(ContactDTO contactDTO) {
-        if (contactDTO.getProfile() != null && !contactDTO.getProfile().isEmpty())
-            uploadAvatar(contactDTO.getProfile());
 
-        return contactRepo.save(new Contact(contactDTO.getName(), contactDTO.getNumber()));
+        Contact contact = new Contact(contactDTO.getName(), contactDTO.getNumber());
+
+        if (contactDTO.getProfile() != null && !contactDTO.getProfile().isEmpty())
+            uploadAvatar(contactDTO.getProfile(), contact);
+
+        return contactRepo.save(contact);
     }
 
     @PostMapping("/api/update/contact/{id}")
     public Contact update(ContactDTO contactDTO, @PathVariable String id) {
 
-        if (contactDTO.getProfile() != null && !contactDTO.getProfile().isEmpty()){
-            uploadAvatar(contactDTO.getProfile());
-        }
-
         Contact contact = contactRepo.findById(id).orElseThrow();
         contact.name = contactDTO.getName();
         contact.number = contactDTO.getNumber();
+
+        if (contactDTO.getProfile() != null && !contactDTO.getProfile().isEmpty()) {
+            uploadAvatar(contactDTO.getProfile(), contact);
+        }
+
         contactRepo.save(contact);
 
         return contact;
@@ -54,14 +60,21 @@ public class ContactCrudAPI {
      * upload profile image of contact
      *
      * @param file
+     * @param contact
      * @return void
      */
-    private void uploadAvatar(MultipartFile file) {
-        String dir = "/var/www/upload/";
-        Path path = Paths.get(dir + file.getOriginalFilename());
+    private void uploadAvatar(MultipartFile file, Contact contact) {
+        String fileLocation = UPLOAD_DIR + file.getOriginalFilename();
+        Path avatarDir = Paths.get(UPLOAD_DIR);
+        Path avatarPath = Paths.get(fileLocation);
 
         try {
-            Files.write(path, file.getBytes());
+            if (Files.notExists(avatarDir))
+                Files.createDirectory(avatarDir);
+
+            Files.write(avatarPath, file.getBytes());
+            contact.setProfile(fileLocation);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
