@@ -14,7 +14,7 @@
                     <input type="text" class="form-control" name="search" id="search"
                            th:value="${#request.getParameter('search')}"
                            placeholder="Search name or mobile"
-                            autocomplete="false">
+                           autocomplete="false">
                     <div class="input-group-append">
                         <button type="submit" class="btn btn-primary">Find</button>
                     </div>
@@ -44,10 +44,17 @@
 
                 <li class="list-group-item" th:each="contact,itr:${contacts.getContent()}">
                     <div class="row w-100">
-                        <div class="col-12 col-sm-4 col-md-2 px-0">
-                            <img th:src="@{'https://i.picsum.photos/id/' + ${itr.index+60} + '/100/100.jpg' }"
+                        <div class="col-12 col-sm-4 col-md-2 px-0" th:switch="${contact.get('profile')}"
+                             th:with="fakeImageURL='https://i.picsum.photos/id/'">
+                            <img th:case="null"
+                                 th:src="@{${fakeImageURL} + ${itr.index+60} + '/100/100.jpg' }"
                                  alt="Mike Anamendolla"
-                                 class="rounded-circle mx-auto d-block img-fluid">
+                                 class="rounded-circle mx-auto d-block img-fluid avatar">
+                            <img th:case="*"
+                                 th:src="@{'/user/avatar/' + ${contact.get('id')} }"
+                                 alt="Mike Anamendolla"
+                                 class="rounded-circle mx-auto d-block img-fluid avatar">
+
                         </div>
                         <div class="col-10 col-sm-4 col-md-7 text-center text-sm-left">
                             <label class="name lead" th:text="${contact.get('name')}">name</label>

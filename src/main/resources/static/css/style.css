@@ -3,6 +3,11 @@ body{
     background-attachment: fixed;
 }
 
+.avatar{
+    width: 100px !important;
+    height: 100px !important;
+}
+
 #editor{
     background: white;
     border-radius: 5px;

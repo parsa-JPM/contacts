@@ -10,6 +10,7 @@ public class Contact {
     public String id;
     public String name;
     public String number;
+    public String profile;
     public LocalDateTime createdDate;
 
     public Contact() {
@@ -45,6 +46,14 @@ public class Contact {
         this.number = number;
     }
 
+    public String getProfile() {
+        return profile;
+    }
+
+    public void setProfile(String profile) {
+        this.profile = profile;
+    }
+
     public LocalDateTime getCreatedDate() {
         return createdDate;
     }
@@ -59,6 +68,7 @@ public class Contact {
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", number='" + number + '\'' +
+                ", profile='" + profile + '\'' +
                 ", createdDate=" + createdDate +
                 '}';
     }
