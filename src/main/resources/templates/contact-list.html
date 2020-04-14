@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="mother::head('Contact list')"></head>
 
@@ -7,7 +8,7 @@
 
 <div class="container p-5">
     <!-- contacts card -->
-    <div class="row">
+    <div class="row mb-2">
         <div class="col-4 ">
             <form action="/" th:if="${contacts.getTotalPages() != 0 || #request.getParameter('search')!=null}">
                 <div class="input-group">
@@ -22,9 +23,17 @@
             </form>
         </div>
         <div class="col-8 text-right">
-            <a href="/add/contact">
-                <button type="button" class="btn btn-secondary mb-2">Add Contact +</button>
+            <a href="/add/contact" sec:authorize="isAuthenticated()">
+                <button type="button" class="btn btn-secondary">Add Contact +</button>
             </a>
+            <a href="/logout" sec:authorize="isAuthenticated()">
+                <button type="button" class="btn btn-danger">Logout</button>
+            </a>
+
+            <a href="/login" sec:authorize="isAnonymous()">
+                <button type="button" class="btn btn-secondary">Login</button>
+            </a>
+
         </div>
     </div>
     <div class="card card-default" id="card_contacts">
@@ -68,10 +77,10 @@
                             <span class="text-muted small text-truncate">test@example.com</span>
                         </div>
                         <div class="col-10 col-sm-4 col-md-3 text-right">
-                            <a href="#" th:href="@{'/update/contact/'+${contact.get('id')} }">
+                            <a href="#" th:href="@{'/update/contact/'+${contact.get('id')} }" sec:authorize="isAuthenticated()">
                                 <button type="button" class="btn btn-outline-primary">Update</button>
                             </a>
-                            <a href="#" th:href="@{'/delete/contact/'+${contact.get('id')} }">
+                            <a href="#" th:href="@{'/delete/contact/'+${contact.get('id')} }" sec:authorize="isAuthenticated()">
                                 <button type="button" class="btn btn-outline-danger">Delete</button>
                             </a>
                         </div>
