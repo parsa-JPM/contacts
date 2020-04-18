@@ -1,20 +1,19 @@
 version: "3"
 services:
-  web:
-    build: .
-    image: contacts
+  contacts-web:
+    build: app
     container_name: contacts
     restart: always
     environment:
-      - spring_data_mongodb_host=db
+      - spring_data_mongodb_host=mongodb
       - spring_data_mongodb_authentication-database=admin
       - spring_data_mongodb_username=myUserAdmin
       - spring_data_mongodb_password=87654321
       - server_port=4030
     ports:
       - "4030:4030"
-  db:
-    image: mongo
+  contacts-db:
+    build: mongo
     container_name: mongodb
     restart: always
     ports:

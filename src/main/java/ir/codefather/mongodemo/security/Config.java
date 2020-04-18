@@ -29,6 +29,8 @@ public class Config extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .and()
+                .rememberMe()
+                .and()
                 .logout().logoutSuccessUrl("/");
     }
 

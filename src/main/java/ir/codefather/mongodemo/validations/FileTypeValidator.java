@@ -28,7 +28,8 @@ public class FileTypeValidator implements ConstraintValidator<FileType, Multipar
         if (file.isEmpty())
             return true;
 
-        if (!file.getOriginalFilename().contains("\\."))
+
+        if (file.getOriginalFilename() == null || !file.getOriginalFilename().contains("."))
             return false;
 
         String fileSuffix = file.getOriginalFilename().split("\\.")[1];

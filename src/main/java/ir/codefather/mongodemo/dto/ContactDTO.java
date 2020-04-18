@@ -15,7 +15,7 @@ public class ContactDTO {
     private String number;
 
     @FileSize(2000000)
-    @FileType({"jpg","png"})
+    @FileType({"jpg","jpeg","png"})
     private MultipartFile profile;
 
 
