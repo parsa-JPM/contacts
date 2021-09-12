@@ -2,8 +2,10 @@ package ir.codefather.mongodemo.endpoints;
 
 
 import ir.codefather.mongodemo.dto.ContactDTO;
+import ir.codefather.mongodemo.dto.SimplePage;
 import ir.codefather.mongodemo.entities.Contact;
 import ir.codefather.mongodemo.repos.ContactRepo;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +19,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @RestController
+@CrossOrigin
 public class ContactCrudAPI {
 
     public static final String UPLOAD_DIR = "/var/www/upload/avatars/";
@@ -86,6 +89,21 @@ public class ContactCrudAPI {
         contactRepo.deleteById(id);
     }
 
+
+    @GetMapping("/api/ng/contacts")
+    public SimplePage getContactsNG(@RequestParam(value = "search", required = false) String search) {
+        Page<Contact> contactPage = getContacts(0, search);
+        SimplePage contactSimplePage = new SimplePage();
+        contactSimplePage.setContacts(contactPage.getContent());
+        contactSimplePage.setFirst(contactPage.isFirst());
+        contactSimplePage.setLast(contactPage.isLast());
+        contactSimplePage.setSize(contactPage.getSize());
+        contactSimplePage.setTotalElement(contactPage.getTotalElements());
+        contactSimplePage.setNumber(contactPage.getNumber());
+        contactSimplePage.setTotalPages(contactPage.getTotalPages());
+
+        return contactSimplePage;
+    }
 
     @GetMapping("/api/contacts")
     public Page<Contact> getContacts(@RequestParam(value = "search", required = false) String search) {

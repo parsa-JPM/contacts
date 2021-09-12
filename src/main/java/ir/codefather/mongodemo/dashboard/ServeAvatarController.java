@@ -35,13 +35,15 @@ public class ServeAvatarController {
             throw new NotFoundException();
 
         String fileLocation = contact.get().getProfile();
+        if (fileLocation == null)
+            return null;
         Path path = Paths.get(fileLocation);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);
 
         /**
          * if you need to set some specific headers in your response,
-         * this approach is more straightforward than setting headers by means of HttpServletResponse object that is
+         * this approach is more straightforward than setting headers by HttpServletResponse object that is
          * accepted by the method as a parameter.
          * It makes the method signature clear and focused.
          */
